@@ -27,7 +27,8 @@ object Asana {
         case Some(project) =>
           val tasks: List[Task] = client.tasks.findByProject(project.id)
             .query("opt_fields", "completed, name, notes, due_on, tags").execute().toList
-          if (tasks.isEmpty) Left("no tasks found for the project") else Right(tasks)
+          // tasks.reverse to maintain chronological order in report
+          if (tasks.isEmpty) Left("no tasks found for the project") else Right(tasks.reverse)
       }
     } catch {
       case e: IOException => Left(e.getMessage)

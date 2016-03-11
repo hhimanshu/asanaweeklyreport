@@ -10,6 +10,7 @@ import scala.collection.mutable
 
 object AsanaWeekly {
 
+  // (todo: harit) exclude tags (ex. Personal)
   def getTasksForWeek(asanaConfig: AsanaConfig): Either[String, mutable.LinkedHashMap[LocalDate, List[Task]]] = {
     val client: Client = getClient(asanaConfig.access_token)
     val firstDateForWeek: LocalDate = getFirstDateForWeek(asanaConfig.reportDate)
