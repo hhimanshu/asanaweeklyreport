@@ -1,7 +1,7 @@
 import java.io.File
 
-import input.AsanaConfig
-import input.AsanaConfig.AccessTokenKey
+import input.{AsanaWeekly, AsanaConfig}
+import input.AsanaConfig.{ProjectNameKey, AccessTokenKey}
 import input.Validators._
 
 object WeeklyReport {
@@ -19,8 +19,8 @@ object WeeklyReport {
         getDateForReportOrToday(args) match {
           case Left(error) => println(error)
           case Right(date) =>
-            print("Running Weekly")
-            AsanaConfig(config.getString(AccessTokenKey), date)
+            println("Running Weekly")
+            AsanaWeekly.getTasksForWeek(AsanaConfig(config.getString(AccessTokenKey),config.getString(ProjectNameKey), date))
         }
     }
   }

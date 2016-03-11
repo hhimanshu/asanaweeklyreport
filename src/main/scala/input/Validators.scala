@@ -4,6 +4,7 @@ import java.io.File
 import java.time.LocalDate
 
 import com.typesafe.config.{ConfigFactory, Config}
+import input.AsanaConfig.{ProjectNameKey, AccessTokenKey}
 
 import scala.collection.mutable.ListBuffer
 
@@ -16,8 +17,12 @@ object Validators {
     val config: Config = ConfigFactory.parseFile(file)
     val errors: ListBuffer[String] = ListBuffer[String]()
 
-    if (!config.hasPath("access_token")) {
+    if (!config.hasPath(AccessTokenKey)) {
       errors += "access_token is missing"
+    }
+
+    if (!config.hasPath(ProjectNameKey)) {
+      errors += "project_name is missing"
     }
 
     if (errors.nonEmpty) Left(errors.toList) else Right(config)

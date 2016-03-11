@@ -2,24 +2,38 @@ package input
 
 import java.time.LocalDate
 
+import api.Asana.{getAllAsanaTasksForProject, getClient}
+import com.asana.Client
 import com.asana.models.Task
 
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 
 object AsanaWeekly {
 
   // {LocalDate -> [Tasks]}
-  def getTasksForWeek(asanaConfig: AsanaConfig): mutable.LinkedHashMap[LocalDate, List[Task]] = {
+  def getTasksForWeek(asanaConfig: AsanaConfig): Either[String, mutable.LinkedHashMap[LocalDate, List[Task]]] = {
     /**
-      * add projectName in properties
-      * getFirstDayOfWeek
-      * create Asana client
-      * fetch all Tasks
       * filter by the weekdates
       * add to LinkedHashMap
       * return
       */
-    mutable.LinkedHashMap.empty
+    val firstDateForWeek: LocalDate = getFirstDateForWeek(asanaConfig.reportDate)
+    val client: Client = getClient(asanaConfig.access_token)
+
+    getAllAsanaTasksForProject(client, asanaConfig.projectName) match {
+      case Left(error) =>
+        println(error)
+        return Left(error)
+      case Right(tasks) => println(tasks.mkString(","))
+    }
+    Right(mutable.LinkedHashMap.empty)
+  }
+
+  def getWeekDatesFor(date: LocalDate): List[LocalDate] = {
+    val firstDateForWeek: LocalDate = getFirstDateForWeek(date)
+    val weekDates: ListBuffer[LocalDate] = ListBuffer(firstDateForWeek)
+    weekDates.toList
   }
 
   def getFirstDateForWeek(date: LocalDate): LocalDate = {

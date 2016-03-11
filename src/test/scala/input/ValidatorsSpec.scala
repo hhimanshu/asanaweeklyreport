@@ -19,7 +19,7 @@ class ValidatorsSpec extends UnitSpec {
 
   "getConfigurationFromFile" should "return error when file does not contain access_token" in {
     val tempFile: File = File.createTempFile("tempFile", "conf")
-    writeToFile(tempFile, List("email_to=\"some.email@gmail.com\""))
+    writeToFile(tempFile, List("project_name=someProjectName"))
 
     val configOrError: Either[List[String], Config] = getConfigurationFromFile(tempFile)
     val errors: List[String] = configOrError.left.get
@@ -27,9 +27,19 @@ class ValidatorsSpec extends UnitSpec {
     errors.head should include ("access_token is missing")
   }
 
-  "getConfigurationFromFile" should "return no error when file contains access_token" in {
+  "getConfigurationFromFile" should "return error when file does not contain project_name" in {
     val tempFile: File = File.createTempFile("tempFile", "conf")
     writeToFile(tempFile, List("access_token=some_access_token"))
+
+    val configOrError: Either[List[String], Config] = getConfigurationFromFile(tempFile)
+    val errors: List[String] = configOrError.left.get
+    errors should have size 1
+    errors.head should include ("project_name is missing")
+  }
+
+  "getConfigurationFromFile" should "return no error when file contains access_token and project_name" in {
+    val tempFile: File = File.createTempFile("tempFile", "conf")
+    writeToFile(tempFile, List("access_token=some_access_token, project_name=someProject"))
 
     val configOrError: Either[List[String], Config] = getConfigurationFromFile(tempFile)
     val config: Config = configOrError.right.get
