@@ -1,8 +1,13 @@
 import java.io.File
+import java.time.LocalDate
 
+import com.asana.models.Task
+import input.AsanaWeekly.getTasksForWeek
 import input.{AsanaWeekly, AsanaConfig}
 import input.AsanaConfig.{ProjectNameKey, AccessTokenKey}
 import input.Validators._
+
+import scala.collection.mutable
 
 object WeeklyReport {
 
@@ -19,8 +24,9 @@ object WeeklyReport {
         getDateForReportOrToday(args) match {
           case Left(error) => println(error)
           case Right(date) =>
-            println("Running Weekly")
-            AsanaWeekly.getTasksForWeek(AsanaConfig(config.getString(AccessTokenKey),config.getString(ProjectNameKey), date))
+            val tasksForWeek: Either[String, mutable.LinkedHashMap[LocalDate, List[Task]]] =
+              getTasksForWeek(AsanaConfig(config.getString(AccessTokenKey),config.getString(ProjectNameKey), date))
+            println(tasksForWeek)
         }
     }
   }

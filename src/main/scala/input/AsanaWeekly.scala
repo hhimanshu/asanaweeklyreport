@@ -7,33 +7,34 @@ import com.asana.Client
 import com.asana.models.Task
 
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
 
 object AsanaWeekly {
 
-  // {LocalDate -> [Tasks]}
   def getTasksForWeek(asanaConfig: AsanaConfig): Either[String, mutable.LinkedHashMap[LocalDate, List[Task]]] = {
-    /**
-      * filter by the weekdates
-      * add to LinkedHashMap
-      * return
-      */
-    val firstDateForWeek: LocalDate = getFirstDateForWeek(asanaConfig.reportDate)
     val client: Client = getClient(asanaConfig.access_token)
+    val firstDateForWeek: LocalDate = getFirstDateForWeek(asanaConfig.reportDate)
+    val weekDateByTasks: mutable.LinkedHashMap[LocalDate, List[Task]] = mutable.LinkedHashMap.empty
 
     getAllAsanaTasksForProject(client, asanaConfig.projectName) match {
-      case Left(error) =>
-        println(error)
-        return Left(error)
-      case Right(tasks) => println(tasks.mkString(","))
+      case Left(error) => return Left(error)
+      case Right(tasks) =>
+        for {
+          task <- tasks
+          if task.dueOn != null
+          taskDueOn = LocalDate.parse(task.dueOn.toString)
+          if isValidTaskForWeek(firstDateForWeek, taskDueOn)
+        } weekDateByTasks.get(taskDueOn) match {
+          case None => weekDateByTasks.put(taskDueOn, List(task))
+          case Some(existingTasks) => weekDateByTasks.put(taskDueOn, task :: existingTasks)
+        }
     }
-    Right(mutable.LinkedHashMap.empty)
+
+    Right(weekDateByTasks)
   }
 
-  def getWeekDatesFor(date: LocalDate): List[LocalDate] = {
-    val firstDateForWeek: LocalDate = getFirstDateForWeek(date)
-    val weekDates: ListBuffer[LocalDate] = ListBuffer(firstDateForWeek)
-    weekDates.toList
+  def isValidTaskForWeek(firstDateForWeek: LocalDate, taskDueOn: LocalDate): Boolean = {
+    (taskDueOn.isEqual(firstDateForWeek) || taskDueOn.isAfter(firstDateForWeek)) &&
+      taskDueOn.isBefore(firstDateForWeek.plusWeeks(1))
   }
 
   def getFirstDateForWeek(date: LocalDate): LocalDate = {
