@@ -15,5 +15,3 @@ libraryDependencies ++= Seq(
 
 // sbt pack
 packAutoSettings
-
-coverageEnabled := true
