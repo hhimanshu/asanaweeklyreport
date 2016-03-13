@@ -8,10 +8,10 @@ This project retrieves your asana tasks for the week and sends out an email as h
 This project is useful for people who track their productivity and use Asana as a tool of choice.
 
 ## Why? ##
-This goes back when I was working with [SunRun](http://www.sunrun.com). We were working on building [BrightPath](http://www.sunrun.com/why-sunrun/about/news/press-releases/sunrun-unveils-brightpath-first-end-end-automated-software) and were required to submit our weekly work as part of DOE grant. While initially I was resistant with this idea of additional work, I soon started to appreciate this approach. The main reasons while I still do this (even though it is not required with my current employer) are 
+This goes back when I was working with [SunRun](http://www.sunrun.com). We were working on building [BrightPath](http://www.sunrun.com/why-sunrun/about/news/press-releases/sunrun-unveils-brightpath-first-end-end-automated-software) and were required to submit our weekly work as part of DOE grant. While initially I was resistant with this idea of additional work, I soon started to appreciate this approach. The main reasons I still do this (even though it is not required with my current employer) are 
 - Reflect on the week and get a sense of accomplishment.
 - Feedback on what went well and what didn't
-- Identify on what could be improved
+- Identify what could be improved
 - How I am spending my time
 
 # Pre-requisites
