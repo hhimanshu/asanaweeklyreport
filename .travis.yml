@@ -7,7 +7,7 @@ script:
   - sbt clean coverage test
 
 before_install:
-  - pip install codecov
+  - sudo pip install codecov
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
