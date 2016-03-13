@@ -25,6 +25,18 @@ object Validators {
       errors += "project_name is missing"
     }
 
+    if (!config.hasPath("email.username")) {
+      errors += "email.username is missing"
+    }
+
+    if (!config.hasPath("email.password")) {
+      errors += "email.password is missing"
+    }
+
+    if (!config.hasPath("email.recipients")) {
+      errors += "email.recipients is missing"
+    }
+
     if (errors.nonEmpty) Left(errors.toList) else Right(config)
   }
 
