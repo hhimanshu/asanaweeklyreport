@@ -1,4 +1,4 @@
-Asana Weekly Report [![Build Status](https://travis-ci.org/hhimanshu/asanaweeklyreport.svg?branch=master)](https://travis-ci.org/hhimanshu/asanaweeklyreport)
+Asana Weekly Report [![Build Status](https://travis-ci.org/hhimanshu/asanaweeklyreport.svg?branch=master)](https://travis-ci.org/hhimanshu/asanaweeklyreport)  [![Coverage Status](https://coveralls.io/repos/github/hhimanshu/asanaweeklyreport/badge.svg?branch=master)](https://coveralls.io/github/hhimanshu/asanaweeklyreport?branch=master)
 ====
 
 ## What? ##
